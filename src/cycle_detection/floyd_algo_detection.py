@@ -17,9 +17,28 @@ def detect_cycle(head_node: Node) -> bool:
         if slow == fast:
             loop = True
             break
+
+    if loop:
+        #     we detected loop, let's find cycle length
+        slow = head_node
+        while slow != fast:
+            slow = slow.get_next_node()
+            fast = fast.get_next_node()
+
+        print(slow.get_data())
+
+        cycle_length = 0
+        fast = slow.get_next_node()
+
+        while slow != fast:
+            fast = fast.get_next_node()
+            cycle_length += 1
+
+        print(cycle_length)
+
     return loop
 
 
 if __name__ == "__main__":
-    head = generate_linked_list(100, 0.01)
+    head = generate_linked_list(100, 0.1)
     print(detect_cycle(head))
