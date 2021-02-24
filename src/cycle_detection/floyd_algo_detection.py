@@ -25,7 +25,7 @@ def detect_cycle(head_node: Node) -> bool:
             slow = slow.get_next_node()
             fast = fast.get_next_node()
 
-        print(slow.get_data())
+        # print(slow.get_data())
 
         cycle_length = 0
         fast = slow.get_next_node()
@@ -34,7 +34,7 @@ def detect_cycle(head_node: Node) -> bool:
             fast = fast.get_next_node()
             cycle_length += 1
 
-        print(cycle_length)
+        # print(cycle_length)
 
     return loop
 
