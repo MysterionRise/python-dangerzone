@@ -1,3 +1,5 @@
 pylint
 black
 isort
+Pillow
+matplotlib
