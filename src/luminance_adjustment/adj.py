@@ -1,36 +1,43 @@
 import math
 from random import randint
-
+import glob
 import matplotlib.pyplot as plt
-
+from pathlib import Path
 from PIL import Image, ImageEnhance, ImageStat
 
 
 def replace_white(im_file):
+    directory = im_file.split("/")[1]
+    file = im_file.split("/")[2]
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
     cnt = 0
+    white_cnt = 0
     brightness = 140
 
-    darkness_factor = 0.8
+    darkness_factor = 0.9
     mode = im.mode
     new_img = Image.new(mode, (width, height))
     new_pixels = new_img.load()
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
-
+            # if r >= 250 and g >= 250 and b >= 250:
+            #     white_cnt += 1
+            #     new_pixels[x, y] = (r, g, b, 0)
             if r > brightness or g > brightness or b > brightness and len(a) == 1 and a[0] != 0:
                 # print("{} {}".format(x, y))
                 cnt += 1
                 new_pixels[x, y] = (int(r * darkness_factor), int(g * darkness_factor), int(b * darkness_factor), a[0])
             else:
                 new_pixels[x, y] = pixels[x, y]
-    print(cnt)
+    print(white_cnt)
     stat = ImageStat.Stat(new_img)
-    print((stat.mean[0], stat.rms[0]))
-    new_img.show()
+    print("{},{}".format(directory + "/" + file, (stat.mean[0], stat.rms[0])))
+    Path("targets/" + directory + "/").mkdir(parents=True, exist_ok=True)
+    new_img.save("targets/" + directory + "/" + file)
+    # new_img.show()
     # width, height = (1200, 800)
     # mode = 'RGB'
     # my_image = Image.new(mode, (width, height))
@@ -96,7 +103,8 @@ def get_histogram(im_file):
 
 
 if __name__ == '__main__':
-    replace_white("images/1b.png")
+    for f in glob.glob("rest/*/*.png"):
+        replace_white(f)
 
     # print(brightness("images/1.jpg"))
     # print(brightness("images/2.jpg"))
@@ -105,7 +113,7 @@ if __name__ == '__main__':
     # print(brightness("images/5.png"))
     # print(brightness("images/6.jpg"))
     # print('--------------------------')
-    print(brightness("images/3a.png"))
+    # print(brightness("images/3a.png"))
     # print(brightness("images/2a.png"))
     # print(brightness("images/3a.png"))
     # print(brightness("images/4a.png"))
