@@ -1,6 +1,8 @@
 import math
 from random import randint
 import glob
+from typing import List
+
 import matplotlib.pyplot as plt
 from pathlib import Path
 from PIL import Image, ImageEnhance, ImageStat
@@ -57,70 +59,40 @@ def replace_white(im_file):
     # my_image.show()
 
 
+def luminocity(r: int, g: int, b: int) -> float:
+    return (0.21 * r) + (0.72 * g) + (0.07 * b)
+
+
+def distribution_for_files(files: List[str]):
+    total_lumi = []
+    for f in files:
+        total_lumi.extend(distribution_of_luminocity(f))
+    sorted(total_lumi)
+    plt.hist(total_lumi, density=True, bins=30)  # density=False would make counts
+    plt.ylabel('Probability')
+    plt.xlabel('Data')
+    plt.show()
+
+
+def distribution_of_luminocity(im_file):
+    im = Image.open(im_file)
+    width, height = im.size
+    pixels = im.load()
+    all_lumi = []
+    for x in range(width):
+        for y in range(height):
+            (r, g, b, *a) = pixels[x, y]
+            if len(a) == 1 and a[0] != 0:
+                all_lumi.append(luminocity(r, g, b))
+    return all_lumi
+
+
 def brightness(im_file):
     im = Image.open(im_file).convert('L')
     stat = ImageStat.Stat(im)
     return stat.mean[0], stat.rms[0]
 
 
-def get_histogram(im_file):
-    im = Image.open(im_file)
-    histogram = im.histogram()
-    # Take only the Red counts
-
-    l1 = histogram[0:256]
-
-    # Take only the Blue counts
-
-    l2 = histogram[256:512]
-
-    # Take only the Green counts
-
-    l3 = histogram[512:768]
-
-    plt.figure(0)
-
-    # R histogram
-
-    for i in range(0, 256):
-        plt.bar(i, l1[i], color=getRed(i), edgecolor=getRed(i), alpha=0.3)
-
-    # G histogram
-
-    plt.figure(1)
-
-    for i in range(0, 256):
-        plt.bar(i, l2[i], color=getGreen(i), edgecolor=getGreen(i), alpha=0.3)
-
-    # B histogram
-
-    plt.figure(2)
-
-    for i in range(0, 256):
-        plt.bar(i, l3[i], color=getBlue(i), edgecolor=getBlue(i), alpha=0.3)
-
-    plt.show()
-
-
 if __name__ == '__main__':
-    for f in glob.glob("rest/*/*.png"):
-        replace_white(f)
-
-    # print(brightness("images/1.jpg"))
-    # print(brightness("images/2.jpg"))
-    # print(brightness("images/3.png"))
-    # print(brightness("images/4.png"))
-    # print(brightness("images/5.png"))
-    # print(brightness("images/6.jpg"))
-    # print('--------------------------')
-    # print(brightness("images/3a.png"))
-    # print(brightness("images/2a.png"))
-    # print(brightness("images/3a.png"))
-    # print(brightness("images/4a.png"))
-    # print(brightness("images/5a.png"))
-    # print('--------------------------')
-    # print(brightness("images/1b.png"))
-    # print(brightness("images/2b.png"))
-    # print(brightness("images/3b.png"))
-    # print(brightness("images/4b.png"))
-    # print(brightness("images/5b.png"))
+    files = [f for f in glob.glob("golden_dataset/*.png")]
+    distribution_for_files(files[::10])
