@@ -2,6 +2,7 @@ import math
 from random import randint
 import glob
 from typing import List
+import pandas as pd
 
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -67,7 +68,8 @@ def distribution_for_files(files: List[str]):
     total_lumi = []
     for f in files:
         total_lumi.extend(distribution_of_luminocity(f))
-    sorted(total_lumi)
+    df = pd.DataFrame(total_lumi)
+    print(df.describe())
     plt.hist(total_lumi, density=True, bins=30)  # density=False would make counts
     plt.ylabel('Probability')
     plt.xlabel('Data')
@@ -94,5 +96,6 @@ def brightness(im_file):
 
 
 if __name__ == '__main__':
-    files = [f for f in glob.glob("golden_dataset/*.png")]
-    distribution_for_files(files[::10])
+    files = [f for f in glob.glob("prepared_for_cleaning/*/*.png")]
+    print(len(files))
+    distribution_for_files(files)
