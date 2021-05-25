@@ -1,12 +1,11 @@
 import glob
-import math
 from pathlib import Path
 from random import random
 from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from PIL import Image, ImageEnhance, ImageStat
+from PIL import Image, ImageStat
 
 
 def replace_white(im_file):
@@ -80,6 +79,29 @@ def replace_white(im_file):
     # my_image.show()
 
 
+def stats_report(files: List[str]):
+    list = []
+    for f in files:
+        data = distribution_of_luminocity(f)
+        data_df = pd.DataFrame(data)
+        dict = data_df.describe().to_dict()
+        dict = dict[0]
+        dict["name"] = f
+        list.append(pd.Series(dict))
+    df = pd.DataFrame(list)
+    df.to_csv("result.csv")
+
+
+def replace_alpha_with_white(file):
+    directory = file.split("/")[1]
+    file_name = file.split("/")[2]
+    im = Image.open(file)
+    image = Image.new("RGB", im.size, "WHITE")
+    image.paste(im, (0, 0), im)
+    Path("targets/" + directory + "/").mkdir(parents=True, exist_ok=True)
+    image.save("targets/" + directory + "/" + file_name)
+
+
 def luminocity(r: int, g: int, b: int) -> float:
     return (0.21 * r) + (0.72 * g) + (0.07 * b)
 
@@ -105,9 +127,7 @@ def distribution_for_files(files: List[str]):
         total_lumi.extend(distribution_of_luminocity(f))
     df = pd.DataFrame(total_lumi)
     print(df.describe())
-    plt.hist(
-        total_lumi, density=True, bins=30
-    )  # density=False would make counts
+    plt.hist(total_lumi, density=True, bins=30)  # density=False would make counts
     plt.ylabel("Probability")
     plt.xlabel("Data")
     plt.show()
@@ -133,10 +153,13 @@ def brightness(im_file):
 
 
 if __name__ == "__main__":
-
+    for f in glob.glob("sm_images/*/*_400X400.png"):
+        replace_alpha_with_white(f)
+    # files = [f for f in glob.glob("sm_images/*/*_400X400.png")]
+    # stats_report(files)
     # files = [f for f in glob.glob("prepared_for_cleaning/*/*.png")]
-    for f in glob.glob("prepared_for_cleaning/*/*.png"):
-        replace_white(f)
-    files = [f for f in glob.glob("targets/*/*.png")]
-    print(len(files))
-    distribution_for_files(files)
+    # for f in glob.glob("prepared_for_cleaning/*/*.png"):
+    #     replace_white(f)
+    # files = [f for f in glob.glob("targets/*/*.png")]
+    # print(len(files))
+    # distribution_for_files(files)

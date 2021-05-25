@@ -138,3 +138,4 @@ dmypy.json
 /src/luminance_adjustment/white_objects/
 /src/luminance_adjustment/golden_dataset/
 /src/luminance_adjustment/prepared_for_cleaning/
+/src/luminance_adjustment/sm_images/
