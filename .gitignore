@@ -139,3 +139,8 @@ dmypy.json
 /src/luminance_adjustment/golden_dataset/
 /src/luminance_adjustment/prepared_for_cleaning/
 /src/luminance_adjustment/sm_images/
+/src/text2speech/settings.py
+/src/text2speech/explicit_questions_known/
+/src/text2speech/explicit_questions_unknown/
+/src/text2speech/implicit_questions_known/
+/src/text2speech/implicit_questions_unknown/

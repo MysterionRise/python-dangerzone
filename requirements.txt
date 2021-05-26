@@ -4,3 +4,5 @@ isort
 Pillow
 matplotlib
 pandas
+pydub
+requests
