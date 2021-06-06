@@ -10,7 +10,7 @@ app.mount("/toloka", StaticFiles(directory="."), name="toloka")
 
 
 @app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile = File(...), limit: int = 32):
+async def create_upload_file(file: UploadFile = File(...), limit: int = 34):
     results = []
     df = pd.read_csv(io.StringIO(file.file.read().decode("utf-8")), sep="\t")
     df = (
@@ -27,4 +27,4 @@ async def create_upload_file(file: UploadFile = File(...), limit: int = 32):
         ):
             results.append(index)
 
-    return {"filename": file.filename, "results": results}
+    return {"filename": file.filename, "results": results, "limit": limit}
