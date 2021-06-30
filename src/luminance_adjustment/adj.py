@@ -28,7 +28,7 @@ def replace_white(im_file):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
-            if random() > 0.5:
+            if random() > 0.2:
                 if l < mean:
                     new_pixels[x, y] = (
                         r + r_component(std),
@@ -153,13 +153,14 @@ def brightness(im_file):
 
 
 if __name__ == "__main__":
-    for f in glob.glob("sm_images/*/*_400X400.png"):
-        replace_alpha_with_white(f)
-    # files = [f for f in glob.glob("sm_images/*/*_400X400.png")]
+    # for f in glob.glob("replacement/*/*_400X400.png"):
+    #     replace_alpha_with_white(f)
+    # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # files = [f for f in glob.glob("prepared_for_cleaning/*/*.png")]
-    # for f in glob.glob("prepared_for_cleaning/*/*.png"):
+    # for f in glob.glob("new/*/*.png"):
     #     replace_white(f)
-    # files = [f for f in glob.glob("targets/*/*.png")]
-    # print(len(files))
-    # distribution_for_files(files)
+    files = [f for f in glob.glob("targets/*/*.png")]
+    print(len(files))
+    distribution_for_files(files)
+    # files = [f for f in glob.glob("new/*/*.png")]
+    # stats_report(files)
