@@ -15,7 +15,7 @@ def replace_white(im_file):
     width, height = im.size
     pixels = im.load()
     mean = 119
-    std = 10
+    std = 20
     # cnt = 0
     # white_cnt = 0
     # brightness = 140
@@ -28,7 +28,7 @@ def replace_white(im_file):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
-            if random() > 0.2:
+            if random() > 0.0:
                 if l < mean:
                     new_pixels[x, y] = (
                         r + r_component(std),
@@ -92,6 +92,25 @@ def stats_report(files: List[str]):
     df.to_csv("result.csv")
 
 
+def replace_white_with_alpha(im_file):
+    directory = im_file.split("/")[1]
+    file = im_file.split("/")[2]
+    im = Image.open(im_file)
+    width, height = im.size
+    pixels = im.load()
+    image = Image.new("RGBA", im.size)
+    new_pixels = image.load()
+    for x in range(width):
+        for y in range(height):
+            (r, g, b, *a) = pixels[x, y]
+            if r >= 240 and g >= 240 and b >= 240:
+                new_pixels[x, y] = (255, 255, 255, 0)
+            else:
+                new_pixels[x, y] = pixels[x, y]
+    Path("targets/" + directory + "/").mkdir(parents=True, exist_ok=True)
+    image.save("targets/" + directory + "/" + file)
+
+
 def replace_alpha_with_white(file):
     directory = file.split("/")[1]
     file_name = file.split("/")[2]
@@ -153,14 +172,14 @@ def brightness(im_file):
 
 
 if __name__ == "__main__":
-    # for f in glob.glob("replacement/*/*_400X400.png"):
-    #     replace_alpha_with_white(f)
+    for f in glob.glob("replacement/*/*.png"):
+        replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("new/*/*.png"):
-    #     replace_white(f)
+    for f in glob.glob("targets/*/*.png"):
+        replace_white(f)
     files = [f for f in glob.glob("targets/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    # files = [f for f in glob.glob("new/*/*.png")]
-    # stats_report(files)
+    files = [f for f in glob.glob("targets/*/*.png")]
+    stats_report(files)
