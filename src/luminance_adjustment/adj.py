@@ -172,14 +172,16 @@ def brightness(im_file):
 
 
 if __name__ == "__main__":
-    for f in glob.glob("replacement/*/*.png"):
-        replace_white_with_alpha(f)
+    # for f in glob.glob("replacement/*/*.png"):
+    #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    for f in glob.glob("targets/*/*.png"):
-        replace_white(f)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    # for f in glob.glob("targets/*/*.png"):
+    #     replace_white(f)
+    files = [f for f in glob.glob("replacement/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    files = [f for f in glob.glob("replacement/*/*.png")]
     stats_report(files)
+    for f in glob.glob("replacement/*/*.png"):
+        replace_alpha_with_white(f)
