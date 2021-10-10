@@ -24,25 +24,42 @@ def replace_white(im_file):
     mode = im.mode
     new_img = Image.new(mode, (width, height))
     new_pixels = new_img.load()
+    print(pixels)
+    print(pixels[0, 0])
+    print(im_file)
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
             if random() > 0.0:
                 if l < mean:
-                    new_pixels[x, y] = (
-                        r + r_component(std),
-                        g + g_component(std),
-                        b + b_component(std),
-                        a[0],
-                    )
+                    if len(a) == 1:
+                        new_pixels[x, y] = (
+                            r + r_component(std),
+                            g + g_component(std),
+                            b + b_component(std),
+                            a[0]
+                        )
+                    else:
+                        new_pixels[x, y] = (
+                            r + r_component(std),
+                            g + g_component(std),
+                            b + b_component(std),
+                        )
                 else:
-                    new_pixels[x, y] = (
-                        r - r_component(std),
-                        g - g_component(std),
-                        b - b_component(std),
-                        a[0],
-                    )
+                    if len(a) == 1:
+                        new_pixels[x, y] = (
+                            r - r_component(std),
+                            g - g_component(std),
+                            b - b_component(std),
+                            a[0],
+                        )
+                    else:
+                        new_pixels[x, y] = (
+                            r - r_component(std),
+                            g - g_component(std),
+                            b - b_component(std),
+                        )
             else:
                 new_pixels[x, y] = pixels[x, y]
             # if r >= 250 and g >= 250 and b >= 250:
@@ -176,12 +193,12 @@ if __name__ == "__main__":
     #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("targets/*/*.png"):
+    # for f in glob.glob("replacement/*/*.jpg"):
     #     replace_white(f)
-    files = [f for f in glob.glob("replacement/*/*.png")]
+    files = [f for f in glob.glob("targets/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("replacement/*/*.png")]
+    files = [f for f in glob.glob("targets/*/*.png")]
     stats_report(files)
-    for f in glob.glob("replacement/*/*.png"):
-        replace_alpha_with_white(f)
+    # for f in glob.glob("replacement/*/*.png"):
+    #     replace_alpha_with_white(f)
