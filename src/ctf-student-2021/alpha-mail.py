@@ -28,15 +28,23 @@ COLOURS = [
 ]
 
 
+def calculate_left_edge(value: int, range_size: float) -> int:
+    return max(0, value - value * range_size)
+
+
+def calculate_right_edge(value: int, range_size: float) -> int:
+    return min(255, value + value * range_size)
+
+
 def in_colour_range(pixel_colour, target_colour_list, range_size):
     r, g, b = pixel_colour
     for target_colour in target_colour_list:
-        rleft = max(0, target_colour[0] - target_colour[0] * range_size)
-        rright = min(255, target_colour[0] + target_colour[0] * range_size)
-        gleft = max(0, target_colour[1] - target_colour[1] * range_size)
-        gright = min(255, target_colour[1] + target_colour[1] * range_size)
-        bleft = max(0, target_colour[2] - target_colour[2] * range_size)
-        bright = min(255, target_colour[2] + target_colour[2] * range_size)
+        rleft = calculate_left_edge(target_colour[0], range_size)
+        rright = calculate_right_edge(target_colour[0], range_size)
+        gleft = calculate_left_edge(target_colour[1], range_size)
+        gright = calculate_right_edge(target_colour[1], range_size)
+        bleft = calculate_left_edge(target_colour[2], range_size)
+        bright = calculate_right_edge(target_colour[2], range_size)
         if rleft <= r <= rright and gleft <= g <= gright and bleft <= b <= bright:
             return True
 
@@ -58,6 +66,7 @@ def decode_captcha(file_name, idx):
                         new_pixels[i, j] = (0, 0, 0)
             image.save("{}-{}.jpg".format(idx, colour_number))
             colour_number += 1
+
     return "0000000000"
 
 
