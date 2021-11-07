@@ -27,9 +27,8 @@ def join_log_files(name: str):
 if __name__ == '__main__':
     df = pd.read_csv('data/participants.csv', sep=',', header=None)
 
-    # for index, row in df.iterrows():
-    #     join_log_files(row[0])
-    #
+    for index, row in df.iterrows():
+        join_log_files(row[0])
 
     for _, row in df.iterrows():
         sheet_name = f'Набор{row[1]}'
