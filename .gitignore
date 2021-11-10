@@ -146,3 +146,5 @@ dmypy.json
 /src/text2speech/implicit_questions_unknown/
 /src/luminance_adjustment/replacement/
 /src/data-cleanup/data/lookup_table.xls
+/src/data-cleanup/data/dataset_counted.xlsx
+/src/data-cleanup/data/dataset.xlsx
