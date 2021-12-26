@@ -18,11 +18,15 @@ if __name__ == '__main__':
         lines = file.readlines()
         for line in lines:
             line = line.strip()
+            if line.startswith("Seq") or line == "":
+                print(line)
+                continue
             numbers = [int(s) for s in line.split()]
             print(numbers[0], end=" ")
             prev = []
             for i in range(1, len(numbers) - 1):
                 if i == numbers[-1]:
+                    prev.append(numbers[i])
                     print(numbers[i], end=" ")
                 else:
                     x = 0
