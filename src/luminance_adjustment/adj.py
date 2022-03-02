@@ -14,8 +14,8 @@ def replace_white(im_file):
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
-    mean = 119
-    std = 20
+    mean = 128
+    std = 10
     # cnt = 0
     # white_cnt = 0
     # brightness = 140
@@ -24,14 +24,14 @@ def replace_white(im_file):
     mode = im.mode
     new_img = Image.new(mode, (width, height))
     new_pixels = new_img.load()
-    print(pixels)
-    print(pixels[0, 0])
-    print(im_file)
+    # print(pixels)
+    # print(pixels[0, 0])
+    # print(im_file)
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
-            if random() > 0.0:
+            if random() > 0.5:
                 if l < mean:
                     if len(a) == 1:
                         new_pixels[x, y] = (
@@ -195,12 +195,12 @@ if __name__ == "__main__":
     #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("replacement/*/*.jpg"):
+    # for f in glob.glob("EE_FM_RNF/*/*.png"):
     #     replace_white(f)
-    files = [f for f in glob.glob("EE_FM_RNF/*/*.png")]
+    files = [f for f in glob.glob("targets/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("EE_FM_RNF/*/*.png")]
+    files = [f for f in glob.glob("targets/*/*.png")]
     stats_report(files)
     # for f in glob.glob("replacement/*/*.png"):
     #     replace_alpha_with_white(f)
