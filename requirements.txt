@@ -12,3 +12,4 @@ uvicorn[standard]
 aiofiles
 xlrd
 openpyxl
+bingo-elastic==1.6.0

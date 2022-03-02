@@ -101,6 +101,8 @@ def stats_report(files: List[str]):
     for f in files:
         data = distribution_of_luminocity(f)
         data_df = pd.DataFrame(data)
+        if len(data_df.columns) == 0:
+            print(f)
         dict = data_df.describe().to_dict()
         dict = dict[0]
         dict["name"] = f
@@ -195,10 +197,10 @@ if __name__ == "__main__":
     # stats_report(files)
     # for f in glob.glob("replacement/*/*.jpg"):
     #     replace_white(f)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    files = [f for f in glob.glob("EE_FM_RNF/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    files = [f for f in glob.glob("EE_FM_RNF/*/*.png")]
     stats_report(files)
     # for f in glob.glob("replacement/*/*.png"):
     #     replace_alpha_with_white(f)

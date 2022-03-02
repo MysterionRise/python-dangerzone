@@ -24,9 +24,9 @@ if __name__ == '__main__':
             numbers = [int(s) for s in line.split()]
             print(numbers[0], end=" ")
             prev = []
+            prev.append(numbers[numbers[-1]])
             for i in range(1, len(numbers) - 1):
                 if i == numbers[-1]:
-                    prev.append(numbers[i])
                     print(numbers[i], end=" ")
                 else:
                     x = 0
