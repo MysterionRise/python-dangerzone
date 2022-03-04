@@ -9,13 +9,13 @@ from PIL import Image, ImageStat
 
 
 def replace_white(im_file):
-    directory = im_file.split("/")[1]
-    file = im_file.split("/")[2]
+    directory = im_file.split("/")[2]
+    file = im_file.split("/")[3]
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
-    mean = 128
-    std = 10
+    mean = 125
+    std = 20
     # cnt = 0
     # white_cnt = 0
     # brightness = 140
@@ -32,21 +32,21 @@ def replace_white(im_file):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
             if random() > 0.5:
-                if l < mean:
+                # if l < mean:
                     if len(a) == 1:
                         new_pixels[x, y] = (
-                            r + r_component(std),
-                            g + g_component(std),
-                            b + b_component(std),
+                            r - r_component(2*std),
+                            g - g_component(2*std),
+                            b - b_component(2*std),
                             a[0]
                         )
                     else:
                         new_pixels[x, y] = (
-                            r + r_component(std),
-                            g + g_component(std),
-                            b + b_component(std),
+                            r - r_component(2*std),
+                            g - g_component(2*std),
+                            b - b_component(2*std),
                         )
-                else:
+            else:
                     if len(a) == 1:
                         new_pixels[x, y] = (
                             r - r_component(std),
@@ -60,8 +60,8 @@ def replace_white(im_file):
                             g - g_component(std),
                             b - b_component(std),
                         )
-            else:
-                new_pixels[x, y] = pixels[x, y]
+            # else:
+            #     new_pixels[x, y] = pixels[x, y]
             # if r >= 250 and g >= 250 and b >= 250:
             #     white_cnt += 1
             #     new_pixels[x, y] = (r, g, b, 0)
@@ -195,12 +195,12 @@ if __name__ == "__main__":
     #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("EE_FM_RNF/*/*.png"):
+    # for f in glob.glob("EE_FM_RNF/Известные/Сдвинуть_влево_уменьшить/*.png"):
     #     replace_white(f)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    files = [f for f in glob.glob("data/FIN_Известные/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("targets/*/*.png")]
+    files = [f for f in glob.glob("data/FIN_Известные/*.png")]
     stats_report(files)
     # for f in glob.glob("replacement/*/*.png"):
     #     replace_alpha_with_white(f)
