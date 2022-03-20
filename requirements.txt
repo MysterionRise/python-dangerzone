@@ -12,4 +12,6 @@ uvicorn[standard]
 aiofiles
 xlrd
 openpyxl
+apache_beam
+mwparserfromhell
 bingo-elastic==1.6.0

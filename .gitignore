@@ -150,3 +150,5 @@ dmypy.json
 /src/data-cleanup/data/dataset.xlsx
 /src/luminance_adjustment/EE_FM_RNF/
 /src/luminance_adjustment/data/
+/src/luminance_adjustment/Fillers/
+/src/luminance_adjustment/Fillers/

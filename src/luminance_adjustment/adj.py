@@ -111,9 +111,11 @@ def stats_report(files: List[str]):
     df.to_csv("result.csv")
 
 
-def replace_white_with_alpha(im_file):
-    directory = im_file.split("/")[1]
-    file = im_file.split("/")[2]
+def replace_white_with_alpha(im_file, is_jpg=False):
+    directory = im_file.split("/")[0]
+    file = im_file.split("/")[1]
+    if is_jpg:
+        file = file.replace(".jpg", ".png")
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
@@ -195,12 +197,12 @@ if __name__ == "__main__":
     #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("EE_FM_RNF/Известные/Сдвинуть_влево_уменьшить/*.png"):
-    #     replace_white(f)
-    files = [f for f in glob.glob("data/FIN_Известные/*.png")]
+    # for f in glob.glob("Fillers/*.jpg"):
+    #     replace_white_with_alpha(f, True)
+    files = [f for f in glob.glob("targets/*/*.png")]
     print(len(files))
     distribution_for_files(files)
-    files = [f for f in glob.glob("data/FIN_Известные/*.png")]
+    files = [f for f in glob.glob("targets/*/*.png")]
     stats_report(files)
     # for f in glob.glob("replacement/*/*.png"):
     #     replace_alpha_with_white(f)
