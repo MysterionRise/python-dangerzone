@@ -111,31 +111,38 @@ def stats_report(files: List[str]):
     df.to_csv("result.csv")
 
 
-def replace_white_with_alpha(im_file, is_jpg=False):
+def replace_white_with_alpha(im_file, is_jpg=False, is_png=False):
     directory = im_file.split("/")[0]
     file = im_file.split("/")[1]
     if is_jpg:
         file = file.replace(".jpg", ".png")
+    if is_png:
+        file = file.replace(".png", ".jpg")
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
-    image = Image.new("RGBA", im.size)
+    if is_png:
+        image = Image.new("RGB", im.size)
+    else:
+        image = Image.new("RGBA", im.size)
     new_pixels = image.load()
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
-            if r >= 240 and g >= 240 and b >= 240:
-                new_pixels[x, y] = (255, 255, 255, 0)
-            else:
-                new_pixels[x, y] = pixels[x, y]
+            # if r >= 2 and g >= 245 and b >= 245:
+            #     new_pixels[x, y] = (255, 255, 255, 0)
+            # else:
+            new_pixels[x, y] = pixels[x, y]
     Path("targets/" + directory + "/").mkdir(parents=True, exist_ok=True)
     image.save("targets/" + directory + "/" + file)
 
 
-def replace_alpha_with_white(file):
+def replace_alpha_with_white(file, is_png=False):
     directory = file.split("/")[1]
     file_name = file.split("/")[2]
     im = Image.open(file)
+    if is_png:
+        file_name = file_name.replace(".png", ".jpg")
     image = Image.new("RGB", im.size, "WHITE")
     image.paste(im, (0, 0), im)
     Path("targets/" + directory + "/").mkdir(parents=True, exist_ok=True)
@@ -197,12 +204,12 @@ if __name__ == "__main__":
     #     replace_white_with_alpha(f)
     # files = [f for f in glob.glob("targets1/*/*_400X400.png")]
     # stats_report(files)
-    # for f in glob.glob("Fillers/*.jpg"):
-    #     replace_white_with_alpha(f, True)
-    files = [f for f in glob.glob("targets/*/*.png")]
-    print(len(files))
-    distribution_for_files(files)
-    files = [f for f in glob.glob("targets/*/*.png")]
-    stats_report(files)
+    for f in glob.glob("data/*/*.png"):
+        replace_alpha_with_white(f, is_png=True)
+    # files = [f for f in glob.glob("targets/*/*.png")]
+    # print(len(files))
+    # distribution_for_files(files)
+    # files = [f for f in glob.glob("targets/*/*.png")]
+    # stats_report(files)
     # for f in glob.glob("replacement/*/*.png"):
     #     replace_alpha_with_white(f)
