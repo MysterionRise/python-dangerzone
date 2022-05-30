@@ -53,10 +53,11 @@ if __name__ == '__main__':
             [int(first), int(second), int(third), int(fourth), int(fifth)],
             index=['1', '2', '3', '4', '5'])
         if fourth in first_df_list or fifth in first_df_list:
-            first_df.append(s, ignore_index=True)
+            first_df = first_df.append(s, ignore_index=True)
         else:
-            second_df.append(s, ignore_index=True)
-        final_df = pd.concat([first_df, second_df])
-        first_df = first_df.append(s, ignore_index=True)
+            second_df = second_df.append(s, ignore_index=True)
+    first_df = first_df.sample(frac=1).reset_index(drop=True)
+    second_df = second_df.sample(frac=1).reset_index(drop=True)
+    final_df = pd.concat([first_df, second_df])
     print(final_df.head())
     final_df.to_csv('created_seq.csv', index=False)
