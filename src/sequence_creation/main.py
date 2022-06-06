@@ -15,9 +15,9 @@ if __name__ == '__main__':
         2021,
         2024,
         2025,
-        2031,
+        2032,
         2033,
-        2038,
+        2037,
         2041,
         2047,
         2049,
@@ -37,7 +37,6 @@ if __name__ == '__main__':
         2130,
         2135,
         2139,
-        2144,
         2148,
         2152
     ]
@@ -45,19 +44,26 @@ if __name__ == '__main__':
         # create series
         first = row['quest1_a_sound_id'] if row['quest1_a_sound_id'] != 0 else row['quest1_b_sound_id']
         second = row['sound_code']
-        swap_prob = random.random()
-        third = row['pic_code'] if swap_prob >= 0.5 else row['ac_col']
-        fourth = row['ac_col'] if swap_prob >= 0.5 else row['pic_code']
-        fifth = row['quest2_b_sound_id'] if row['quest2_b_sound_id'] != 0 else random.choice([1306, 1307, 1308, 1309, 1310])
+        third = row['quest2_b_sound_id'] if row['quest2_b_sound_id'] != 0 else random.choice([1306, 1307, 1308, 1309, 1310])
+        fourth = row['sound_trigger']
+        fifth = row['pic_code']
+        sixth = row['метка_seq1']
         s = pd.Series(
-            [int(first), int(second), int(third), int(fourth), int(fifth)],
-            index=['1', '2', '3', '4', '5'])
-        if fourth in first_df_list or fifth in first_df_list:
+            [int(first), int(second), int(third), int(fourth), int(fifth), int(sixth)],
+            index=['1', '2', '3', '4', '5', '6'])
+        if fifth in first_df_list:
             first_df = first_df.append(s, ignore_index=True)
         else:
             second_df = second_df.append(s, ignore_index=True)
     first_df = first_df.sample(frac=1).reset_index(drop=True)
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     final_df = pd.concat([first_df, second_df])
-    print(final_df.head())
-    final_df.to_csv('created_seq.csv', index=False)
+    # print(final_df)
+    for _, row in final_df.iterrows():
+        swap_prob = random.random()
+        if swap_prob < 0.5:
+            print(row['1'], row['2'], row['3'], row['4'], row['5'], str(row['6'])[:-2])
+        else:
+            print(row['1'], row['2'], row['3'], row['5'], row['4'], str(row['6'])[:-2])
+    # print(final_df.head())
+    # final_df.to_csv('created_seq.csv', index=False)
