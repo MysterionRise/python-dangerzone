@@ -3,7 +3,7 @@ import random
 import pandas as pd
 
 if __name__ == '__main__':
-    df = pd.read_csv('seq1.csv')
+    df = pd.read_csv('seq3.csv')
     # create empty df
     first_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
     second_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         first = row['quest1_a_sound_id'] if row['quest1_a_sound_id'] != 0 else row['quest1_b_sound_id']
         second = row['sound_code']
         third = row['quest2_b_sound_id'] if row['quest2_b_sound_id'] != 0 else random.choice([1306, 1307, 1308, 1309, 1310])
-        fourth = row['sound_trigger']
+        fourth = row['ac_row']
         fifth = row['pic_code']
         sixth = row['метка_seq1']
         s = pd.Series(
@@ -56,6 +56,10 @@ if __name__ == '__main__':
         else:
             second_df = second_df.append(s, ignore_index=True)
     first_df = first_df.sample(frac=1).reset_index(drop=True)
+    first_df = first_df.sample(frac=1).reset_index(drop=True)
+    first_df = first_df.sample(frac=1).reset_index(drop=True)
+    second_df = second_df.sample(frac=1).reset_index(drop=True)
+    second_df = second_df.sample(frac=1).reset_index(drop=True)
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     final_df = pd.concat([first_df, second_df])
     # print(final_df)
