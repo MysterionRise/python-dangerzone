@@ -1,13 +1,9 @@
 import random
-import xlrd
 
 import pandas as pd
 
-if __name__ == '__main__':
-    df = pd.read_csv('seq3.csv')
-    # create empty df
-    first_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
-    second_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
+
+def generate_sequence(list_name):
     first_df_list = [
         2002,
         2005,
@@ -41,16 +37,27 @@ if __name__ == '__main__':
         2148,
         2152
     ]
+    df = pd.read_excel('sequences.xls', sheet_name=f"Seq{list_name}")
+    nan_value = float("NaN")
+    df.replace("", nan_value, inplace=True)
+    df.dropna(subset=["sound_code"], inplace=True)
+    # create empty df
+    first_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
+    second_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
     for _, row in df.iterrows():
         # create series
-        first = row['quest1_a_sound_id'] if row['quest1_a_sound_id'] != 0 else row['quest1_b_sound_id']
+        first = row['quest1_a_sound_id'] if row['quest1_a_sound_id'] != 0 else \
+            row['quest1_b_sound_id']
         second = row['sound_code']
-        third = row['quest2_b_sound_id'] if row['quest2_b_sound_id'] != 0 else random.choice([1306, 1307, 1308, 1309, 1310])
+        third = row['quest2_b_sound_id'] if row[
+                                                'quest2_b_sound_id'] != 0 else random.choice(
+            [1306, 1307, 1308, 1309, 1310])
         fourth = row['ac_row']
         fifth = row['pic_code']
         sixth = row['метка_seq1']
         s = pd.Series(
-            [int(first), int(second), int(third), int(fourth), int(fifth), int(sixth)],
+            [int(first), int(second), int(third), int(fourth), int(fifth),
+             int(sixth)],
             index=['1', '2', '3', '4', '5', '6'])
         if fifth in first_df_list:
             first_df = first_df.append(s, ignore_index=True)
@@ -62,13 +69,30 @@ if __name__ == '__main__':
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     second_df = second_df.sample(frac=1).reset_index(drop=True)
-    final_df = pd.concat([first_df, second_df])
-    # print(final_df)
-    for _, row in final_df.iterrows():
+    merged_df = pd.concat([first_df, second_df])
+    final_df = pd.DataFrame(columns=['1', '2', '3', '4', '5'])
+    for _, row in merged_df.iterrows():
         swap_prob = random.random()
         if swap_prob < 0.5:
-            print(row['1'], row['2'], row['3'], row['4'], row['5'], str(row['6'])[:-2])
+            s = pd.Series(
+                [row['1'], row['2'], row['3'], row['4'], row['5'],
+                 str(row['6'])[:-2]],
+                index=['1', '2', '3', '4', '5', '6'])
+            final_df = final_df.append(s, ignore_index=True)
         else:
-            print(row['1'], row['2'], row['3'], row['5'], row['4'], str(row['6'])[:-2])
+            s = pd.Series(
+                [row['1'], row['2'], row['3'], row['5'], row['4'],
+                 str(row['6'])[:-2]],
+                index=['1', '2', '3', '4', '5', '6'])
+            final_df = final_df.append(s, ignore_index=True)
     # print(final_df.head())
-    # final_df.to_csv('created_seq.csv', index=False)
+    final_df.to_csv(f"seq{list_name}.csv", index=False, sep=" ")
+
+
+def main():
+    for i in range(1, 6):
+        generate_sequence(i)
+
+
+if __name__ == '__main__':
+    main()
