@@ -30,7 +30,7 @@ def main():
         zipped = dict(zip(pictures, quadrants))
         for picture in pictures[:8]:
             for quadrant in [14, 15, 16, 17]:
-                
+
 
 
         print(zipped)

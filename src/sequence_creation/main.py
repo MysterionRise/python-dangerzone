@@ -63,6 +63,7 @@ def generate_sequence(list_name):
             first_df = first_df.append(s, ignore_index=True)
         else:
             second_df = second_df.append(s, ignore_index=True)
+
     first_df = first_df.sample(frac=1).reset_index(drop=True)
     first_df = first_df.sample(frac=1).reset_index(drop=True)
     first_df = first_df.sample(frac=1).reset_index(drop=True)
@@ -90,8 +91,13 @@ def generate_sequence(list_name):
 
 
 def main():
-    for i in range(1, 6):
-        generate_sequence(i)
+    for i in range(1, 33):
+        try:
+            generate_sequence(i)
+        except Exception as inst:
+            print(type(inst))
+            print(inst)
+            print(f"Error in seq{i}")
 
 
 if __name__ == '__main__':
