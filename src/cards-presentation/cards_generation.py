@@ -1,6 +1,7 @@
 import pandas as pd
 from random import choices
 from PIL import Image
+from collections import Counter
 
 
 # 1  2  3  4  5  6
@@ -34,7 +35,6 @@ def update_pictures(zipped, picture, quadrant, replace_with=None,
     zipped_copy = zipped.copy()
     if replace_with is not None:
         zipped_copy[replace_with] = default_quadrant
-        del zipped_copy[picture]
         zipped_copy[picture] = quadrant
         # remove random picture from zipped_copy that is in quadrant but not picture
         removed_pic = None
@@ -60,22 +60,32 @@ def update_pictures(zipped, picture, quadrant, replace_with=None,
 # each smaller picture is of size 295x295
 # save image to file_name
 def generate_card(pictures_dict, position_sequence, main_picture, main_quadrant):
-    im = Image.new('RGB', (1770, 1770), color=(205, 205, 205))
+    assert len(pictures_dict) == 16
+    assert len(position_sequence) == 16
+    assert main_picture in pictures_dict.keys()
+    assert main_quadrant in pictures_dict.values()
+
+    im = Image.new('RGBA', (1770, 1770), color=(205, 205, 205))
     # sort pictures_dict by second element
     pictures_dict = dict(sorted(pictures_dict.items(), key=lambda x: x[1]))
     # sort position sequence so first positions will be in quadrant 14
     # then quadrant 15, etc.
     position_sequence = sorted(position_sequence,
                                key=lambda x: quadrant_by_position(x))
+    quads = Counter([quadrant_by_position(pos) for pos in position_sequence])
+    assert quads[14] == 4
+    assert quads[15] == 4
+    assert quads[16] == 4
+    assert quads[17] == 4
     print(pictures_dict)
     i = 0
     for picture, quadrant in pictures_dict.items():
         with Image.open(f"images/{picture}.png") as img:
             # past picture  to image by position_sequence
-            im.paste(img, (int((position_sequence[i] / 6)) * 295,
-                           int((position_sequence[i] % 6)) * 295))
+            im.paste(img, (int(((position_sequence[i] - 1) % 6)) * 295,
+                           int(((position_sequence[i] - 1)/ 6)) * 295), img)
         i += 1
-    im.save(f"images/result/{main_picture}_{main_quadrant}.jpeg")
+    im.save(f"images/result/{main_picture}_{main_quadrant}.png")
 
 
 def main():
