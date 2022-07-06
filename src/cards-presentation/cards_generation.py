@@ -90,9 +90,10 @@ def generate_card(pictures_dict, position_sequence, main_picture, main_quadrant)
 
 def main():
     templates_df = pd.read_csv('templates.csv', sep=',', header=None)
-    templates = []
+    templates = dict()
     for _, row in templates_df.iterrows():
-        templates.append(row.tolist())
+        data = row.tolist()[0].split(',')
+        templates[data[0]] = data[1:]
     presentation = pd.read_excel("cards-presentation.xlsx")
     # print(presentation.head())
     pictures = presentation['pic'].tolist()
