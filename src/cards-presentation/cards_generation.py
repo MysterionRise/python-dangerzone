@@ -59,41 +59,66 @@ def update_pictures(zipped, picture, quadrant, replace_with=None,
 # 31 32 33 34 35 36
 # each smaller picture is of size 295x295
 # save image to file_name
-def generate_card(pictures_dict, position_sequence, main_picture, main_quadrant):
-    assert len(pictures_dict) == 16
-    assert len(position_sequence) == 16
-    assert main_picture in pictures_dict.keys()
-    assert main_quadrant in pictures_dict.values()
-
+def generate_card(pictures_dict, position_sequence, main_picture,
+                  main_pos):
     im = Image.new('RGBA', (1770, 1770), color=(205, 205, 205))
     # sort pictures_dict by second element
     pictures_dict = dict(sorted(pictures_dict.items(), key=lambda x: x[1]))
     # sort position sequence so first positions will be in quadrant 14
     # then quadrant 15, etc.
-    position_sequence = sorted(position_sequence,
+    position_sequence = sorted(position_sequence.copy(),
                                key=lambda x: quadrant_by_position(x))
-    quads = Counter([quadrant_by_position(pos) for pos in position_sequence])
-    assert quads[14] == 4
-    assert quads[15] == 4
-    assert quads[16] == 4
-    assert quads[17] == 4
-    print(pictures_dict)
+    if main_pos in position_sequence:
+        position_sequence.remove(main_pos)
+    else:
+        print(f"{main_picture} with pos {main_pos} is not in position sequence")
     i = 0
     for picture, quadrant in pictures_dict.items():
         with Image.open(f"images/{picture}.png") as img:
             # past picture  to image by position_sequence
             im.paste(img, (int(((position_sequence[i] - 1) % 6)) * 295,
-                           int(((position_sequence[i] - 1)/ 6)) * 295), img)
+                           int(((position_sequence[i] - 1) / 6)) * 295), img)
         i += 1
-    im.save(f"images/result/{main_picture}_{main_quadrant}.png")
+    im.paste(Image.open(f"images/{main_picture}.png"),
+             (int((main_pos - 1) % 6) * 295, int((main_pos - 1) / 6) * 295),
+             Image.open(f"images/{main_picture}.png"))
+    im.save(f"images/result/{main_picture}_{main_pos}.png")
+
+
+# creates dict of positions per quadrant
+def make_dict(q1: int, q2: int, q3: int, q4: int) -> dict:
+    res = dict()
+    res[14] = q1
+    res[15] = q2
+    res[16] = q3
+    res[17] = q4
+    return res
+
+
+def delete_random(picture_dict, default_quadrant):
+    # delete random picture from picture_dict
+    removed_pic = None
+    for picture_, quadrant_ in picture_dict.items():
+        if quadrant_ == default_quadrant:
+            removed_pic = picture_
+            break
+    del picture_dict[removed_pic]
+    return picture_dict
 
 
 def main():
+    seq_positions_df = pd.read_csv('sequence_positions.csv')
+    seq_positions_by_name = dict()
+    for index, row in seq_positions_df.iterrows():
+        # TODO may be need to swap 16 and 17
+        seq_positions_by_name[row['name']] = make_dict(row['14'], row['15'],
+                                                       row['16'], row['17'])
+
     templates_df = pd.read_csv('templates.csv', sep=',', header=None)
     templates = dict()
     for _, row in templates_df.iterrows():
         data = row.tolist()[0].split(',')
-        templates[data[0]] = data[1:]
+        templates[data[0]] = [int(x) for x in data[1:]]
     presentation = pd.read_excel("cards-presentation.xlsx")
     # print(presentation.head())
     pictures = presentation['pic'].tolist()
@@ -102,17 +127,22 @@ def main():
         quadrants = presentation[f"seq_{i}"].tolist()
         zipped = dict(zip(pictures, quadrants))
         for picture in pictures[:8]:
-            default_quadrant = zipped[picture]
+            position_by_quadrant = seq_positions_by_name[f"{picture}_seq_{i}"]
+            default_pos = position_by_quadrant[zipped[picture]]
+            default_quadrant = quadrant_by_position(default_pos)
             for quadrant in [14, 15, 16, 17]:
+                picture_pos = position_by_quadrant[quadrant]
+                picture_dict = zipped.copy()
                 if default_quadrant == quadrant:
-                    generate_card(update_pictures(zipped, picture, quadrant),
-                                  choices(templates)[0], picture, quadrant)
+                    del picture_dict[picture]
+                    generate_card(picture_dict, templates[picture], picture,
+                                  default_pos)
                 else:
-                    generate_card(update_pictures(zipped, picture, quadrant,
-                                                  replace_with=replace_picture(
-                                                      picture),
-                                                  default_quadrant=default_quadrant),
-                                  choices(templates)[0], picture, quadrant)
+                    del picture_dict[picture]
+                    picture_dict[replace_picture(picture)] = default_quadrant
+                    generate_card(
+                        delete_random(picture_dict, default_quadrant),
+                        templates[picture], picture, picture_pos)
 
         print(zipped)
     print(pictures)
