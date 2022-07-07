@@ -82,7 +82,7 @@ def generate_card(pictures_dict, position_sequence, main_picture,
     im.paste(Image.open(f"images/{main_picture}.png"),
              (int((main_pos - 1) % 6) * 295, int((main_pos - 1) / 6) * 295),
              Image.open(f"images/{main_picture}.png"))
-    im.save(f"images/result/{main_picture}_{main_pos}.png")
+    im.save(f"images/result/{main_picture}_{quadrant_by_position(main_pos)}.png")
 
 
 # creates dict of positions per quadrant
