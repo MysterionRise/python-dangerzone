@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from random import choices
 from PIL import Image
@@ -60,7 +62,7 @@ def update_pictures(zipped, picture, quadrant, replace_with=None,
 # each smaller picture is of size 295x295
 # save image to file_name
 def generate_card(pictures_dict, position_sequence, main_picture,
-                  main_pos):
+                  main_pos, seq_i):
     im = Image.new('RGBA', (1770, 1770), color=(205, 205, 205))
     # sort pictures_dict by second element
     pictures_dict = dict(sorted(pictures_dict.items(), key=lambda x: x[1]))
@@ -82,7 +84,7 @@ def generate_card(pictures_dict, position_sequence, main_picture,
     im.paste(Image.open(f"images/{main_picture}.png"),
              (int((main_pos - 1) % 6) * 295, int((main_pos - 1) / 6) * 295),
              Image.open(f"images/{main_picture}.png"))
-    im.save(f"images/result/{main_picture}_{quadrant_by_position(main_pos)}.png")
+    im.save(f"images/result/seq_{seq_i}/{main_picture}_{quadrant_by_position(main_pos)}.png")
 
 
 # creates dict of positions per quadrant
@@ -123,7 +125,10 @@ def main():
     # print(presentation.head())
     pictures = presentation['pic'].tolist()
     # just 1 sequence
-    for i in range(1, 2):
+    for i in range(1, 33):
+        # create seq_i dir in result
+        if not os.path.exists(f"images/result/seq_{i}"):
+            os.makedirs(f"images/result/seq_{i}")
         quadrants = presentation[f"seq_{i}"].tolist()
         zipped = dict(zip(pictures, quadrants))
         for picture in pictures[:8]:
@@ -136,13 +141,13 @@ def main():
                 if default_quadrant == quadrant:
                     del picture_dict[picture]
                     generate_card(picture_dict, templates[picture], picture,
-                                  default_pos)
+                                  default_pos, i)
                 else:
                     del picture_dict[picture]
                     picture_dict[replace_picture(picture)] = default_quadrant
                     generate_card(
                         delete_random(picture_dict, default_quadrant),
-                        templates[picture], picture, picture_pos)
+                        templates[picture], picture, picture_pos, i)
 
         print(zipped)
     print(pictures)
