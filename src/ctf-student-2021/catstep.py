@@ -3,15 +3,15 @@ import random
 import requests
 
 
-def request(flag: str):
-    r = requests.post(url, data={"flag": flag})
-    dict = r.json()
-    if "length" in dict:
-        print("{} {}".format(flag, dict["length"]))
-        return dict["length"]
-    else:
-        print(r.json())
-        return 1000000
+def request(flag_: str):
+    r = requests.post(url, data={"flag": flag_})
+    dict_ = r.json()
+    if "length" in dict_:
+        print(f'{flag_} {dict_["length"]}')
+        return dict_["length"]
+
+    print(r.json())
+    return 1000000
 
 
 if __name__ == "__main__":

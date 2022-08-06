@@ -2,7 +2,7 @@ from node import Node, generate_linked_list
 
 
 def detect_cycle(head_node: Node) -> bool:
-    pass
+    print(head_node)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import io
 
 import pandas as pd
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
@@ -27,4 +27,9 @@ async def create_upload_file(file: UploadFile = File(...), limit: int = Form(...
         ):
             results.append(index)
 
-    return {"filename": file.filename, "results": results, "limit": limit, "size": len(results)}
+    return {
+        "filename": file.filename,
+        "results": results,
+        "limit": limit,
+        "size": len(results),
+    }

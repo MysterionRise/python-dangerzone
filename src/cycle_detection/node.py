@@ -24,9 +24,7 @@ def generate_linked_list(size: int, prob: float) -> Node:
     ind = 0
     while ind < size and not loop:
         if random() > 1.0 - prob and len(prev_nodes) > 0:
-            prev_node.set_next_node(
-                prev_nodes[randint(0, len(prev_nodes) - 1)]
-            )
+            prev_node.set_next_node(prev_nodes[randint(0, len(prev_nodes) - 1)])
             loop = True
         else:
             next_node = Node(value=ind)

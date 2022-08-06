@@ -14,7 +14,7 @@ def replace_white(im_file):
     im = Image.open(im_file)
     width, height = im.size
     pixels = im.load()
-    mean = 125
+    # mean = 125
     std = 20
     # cnt = 0
     # white_cnt = 0
@@ -31,35 +31,36 @@ def replace_white(im_file):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
             l = luminocity(r, g, b)
+            print(l)
             if random() > 0.5:
                 # if l < mean:
-                    if len(a) == 1:
-                        new_pixels[x, y] = (
-                            r - r_component(2*std),
-                            g - g_component(2*std),
-                            b - b_component(2*std),
-                            a[0]
-                        )
-                    else:
-                        new_pixels[x, y] = (
-                            r - r_component(2*std),
-                            g - g_component(2*std),
-                            b - b_component(2*std),
-                        )
+                if len(a) == 1:
+                    new_pixels[x, y] = (
+                        r - r_component(2 * std),
+                        g - g_component(2 * std),
+                        b - b_component(2 * std),
+                        a[0],
+                    )
+                else:
+                    new_pixels[x, y] = (
+                        r - r_component(2 * std),
+                        g - g_component(2 * std),
+                        b - b_component(2 * std),
+                    )
             else:
-                    if len(a) == 1:
-                        new_pixels[x, y] = (
-                            r - r_component(std),
-                            g - g_component(std),
-                            b - b_component(std),
-                            a[0],
-                        )
-                    else:
-                        new_pixels[x, y] = (
-                            r - r_component(std),
-                            g - g_component(std),
-                            b - b_component(std),
-                        )
+                if len(a) == 1:
+                    new_pixels[x, y] = (
+                        r - r_component(std),
+                        g - g_component(std),
+                        b - b_component(std),
+                        a[0],
+                    )
+                else:
+                    new_pixels[x, y] = (
+                        r - r_component(std),
+                        g - g_component(std),
+                        b - b_component(std),
+                    )
             # else:
             #     new_pixels[x, y] = pixels[x, y]
             # if r >= 250 and g >= 250 and b >= 250:
@@ -97,17 +98,17 @@ def replace_white(im_file):
 
 
 def stats_report(files: List[str]):
-    list = []
-    for f in files:
-        data = distribution_of_luminocity(f)
+    stats_list = []
+    for file in files:
+        data = distribution_of_luminocity(file)
         data_df = pd.DataFrame(data)
         if len(data_df.columns) == 0:
-            print(f)
-        dict = data_df.describe().to_dict()
-        dict = dict[0]
-        dict["name"] = f
-        list.append(pd.Series(dict))
-    df = pd.DataFrame(list)
+            print(file)
+        data_dict = data_df.describe().to_dict()
+        data_dict = data_dict[0]
+        data_dict["name"] = file
+        stats_list.append(pd.Series(data_dict))
+    df = pd.DataFrame(stats_list)
     df.to_csv("result.csv")
 
 
@@ -129,6 +130,7 @@ def replace_white_with_alpha(im_file, is_jpg=False, is_png=False):
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
+            print(r, g, b, a)
             # if r >= 2 and g >= 245 and b >= 245:
             #     new_pixels[x, y] = (255, 255, 255, 0)
             # else:
@@ -170,8 +172,8 @@ def b_component(value: int) -> int:
 
 def distribution_for_files(files: List[str]):
     total_lumi = []
-    for f in files:
-        total_lumi.extend(distribution_of_luminocity(f))
+    for file in files:
+        total_lumi.extend(distribution_of_luminocity(file))
     df = pd.DataFrame(total_lumi)
     print(df.describe())
     plt.hist(total_lumi, density=True, bins=30)  # density=False would make counts

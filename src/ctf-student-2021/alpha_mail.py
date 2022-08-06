@@ -1,3 +1,5 @@
+import sys
+
 import requests
 from PIL import Image
 
@@ -51,8 +53,8 @@ def in_colour_range(pixel_colour, target_colour_list, range_size):
     return False
 
 
-def decode_captcha(file_name, idx):
-    with Image.open(file_name) as im:
+def decode_captcha(file_name_, idx_):
+    with Image.open(file_name_) as im:
         x, y = im.size
         pixels = im.load()
         colour_number = 1
@@ -64,7 +66,7 @@ def decode_captcha(file_name, idx):
                     c = pixels[i, j]
                     if in_colour_range(c, colours_list, range_size):
                         new_pixels[i, j] = (0, 0, 0)
-            image.save("{}-{}.jpg".format(idx, colour_number))
+            image.save(f"{idx_}-{colour_number}.jpg")
             colour_number += 1
 
     return "0000000000"
@@ -77,15 +79,15 @@ if __name__ == "__main__":
     while True:
         img = requests.get("http://64.225.70.156/captcha", cookies=cookies)
         if img.status_code == 200:
-            file_name = "{}.jpg".format(idx)
+            file_name = f"{idx}.jpg"
             with open(file_name, "wb") as f:
                 f.write(img.content)
             correct_answer = decode_captcha(file_name, idx)
             resp = requests.post(
-                "http://64.225.70.156/prove/speed/{}".format(idx),
+                f"http://64.225.70.156/prove/speed/{idx}",
                 data={"captcha": correct_answer},
                 cookies=cookies,
             )
             print(resp.content)
             idx += 1
-            exit(0)
+            sys.exit(0)

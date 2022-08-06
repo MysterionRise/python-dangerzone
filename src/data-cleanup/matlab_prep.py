@@ -7,13 +7,13 @@ def bigger_than_others(target, prev_numbers):
     """
     if x == 0:
         return False
-    for prev in prev_numbers:
-        if abs(target - prev) < 11:
+    for prev_ in prev_numbers:
+        if abs(target - prev_) < 11:
             return False
     return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with open("seq.txt", encoding="utf-8") as file:
         lines = file.readlines()
         for line in lines:
