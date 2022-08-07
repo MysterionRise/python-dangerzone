@@ -16,3 +16,4 @@ apache_beam
 mwparserfromhell
 pre-commit
 bingo-elastic==1.6.0
+pytest
