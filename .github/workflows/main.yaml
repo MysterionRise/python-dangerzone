@@ -17,6 +17,6 @@ jobs:
           pip install -r requirements.txt
       - name: precommit
         uses: pre-commit/action@v2.0.3
-      - name: Run tests
-        run: |
-          python -m pytest
+#      - name: Run tests
+#        run: |
+#          python -m pytest
