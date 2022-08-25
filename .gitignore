@@ -152,3 +152,14 @@ dmypy.json
 /src/luminance_adjustment/data/
 /src/luminance_adjustment/Fillers/
 /src/luminance_adjustment/Fillers/
+/src/encoding-conversion/utf-16/
+/src/encoding-conversion/utf-8/
+/src/encoding-conversion/day1/
+/src/encoding-conversion/data/
+/src/encoding-conversion/data-per-day/
+/src/encoding-conversion/data-updated/
+/src/encoding-conversion/day1/
+/src/encoding-conversion/gotshild/
+/src/encoding-conversion/gotshild-utf-8/
+/src/encoding-conversion/utf-8/
+/src/encoding-conversion/utf-16/
