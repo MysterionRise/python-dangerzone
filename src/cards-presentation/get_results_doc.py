@@ -70,7 +70,7 @@ def main():
                 # delete name from participants_map
                 del participants_map[row["seq"]][0]
                 big_ind = 0
-
+    print(participants_map)
     results.to_csv("data/results.csv", index=False)
 
 
