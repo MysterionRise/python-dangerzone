@@ -12,17 +12,18 @@ def read_lookup():
 def main():
     lookup_map = read_lookup()
     df = pd.read_csv("results.csv")
-    for ind, row in df.iterrows():
-        try:
-            x = lookup_map[(row["2"], int(row["Где искали_квартиль"]))]
-            print(x)
-        except Exception:
-            print("------------------------")
-            print(ind)
-            print(row)
-            return
-            # print(e)
-            # print(ind)
+    with open("res.txt", "w", encoding="utf-8") as f:
+        for ind, row in df.iterrows():
+            try:
+                x = lookup_map[(row["2"], int(row["Где искали_квартиль"]))]
+                f.write(f"{x}\n")
+            except Exception:
+                print("------------------------")
+                print(ind)
+                print(row)
+                return
+                # print(e)
+                # print(ind)
 
 
 if __name__ == "__main__":
