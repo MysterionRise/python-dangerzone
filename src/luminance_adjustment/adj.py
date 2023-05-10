@@ -30,10 +30,10 @@ def replace_white(im_file):
     for x in range(width):
         for y in range(height):
             (r, g, b, *a) = pixels[x, y]
-            l = luminocity(r, g, b)
-            print(l)
+            lumi = luminocity(r, g, b)
+            print(lumi)
             if random() > 0.5:
-                # if l < mean:
+                # if lumi < mean:
                 if len(a) == 1:
                     new_pixels[x, y] = (
                         r - r_component(2 * std),
@@ -66,10 +66,12 @@ def replace_white(im_file):
             # if r >= 250 and g >= 250 and b >= 250:
             #     white_cnt += 1
             #     new_pixels[x, y] = (r, g, b, 0)
-            # if r > brightness or g > brightness or b > brightness and len(a) == 1 and a[0] != 0:
+            # if r > brightness or g > brightness or
+            # b > brightness and len(a) == 1 and a[0] != 0:
             #     # print("{} {}".format(x, y))
             #     cnt += 1
-            #     new_pixels[x, y] = (int(r * darkness_factor), int(g * darkness_factor), int(b * darkness_factor), a[0])
+            #     new_pixels[x, y] = (int(r * darkness_factor),
+            #     int(g * darkness_factor), int(b * darkness_factor), a[0])
             # else:
             #     new_pixels[x, y] = pixels[x, y]
     # print(white_cnt)

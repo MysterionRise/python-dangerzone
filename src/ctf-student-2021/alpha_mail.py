@@ -58,7 +58,7 @@ def decode_captcha(file_name_, idx_):
         x, y = im.size
         pixels = im.load()
         colour_number = 1
-        for (colours_list, range_size) in COLOURS:
+        for colours_list, range_size in COLOURS:
             image = Image.new("RGB", im.size, "WHITE")
             new_pixels = image.load()
             for i in range(0, x):
@@ -73,7 +73,8 @@ def decode_captcha(file_name_, idx_):
 
 
 if __name__ == "__main__":
-    # r = requests.post("http://64.225.70.156/login", data={"login": LOGIN, "password": PWD})
+    # r = requests.post("http://64.225.70.156/login",
+    # data={"login": LOGIN, "password": PWD})
     cookies = dict(PHPSESSID="e2a865afaa45fbe5d528ee85bc47d969")
     idx = 0
     while True:

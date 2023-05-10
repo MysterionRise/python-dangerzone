@@ -43,12 +43,14 @@ if __name__ == "__main__":
                     f2.write("0\t0\t0\t0\t0\t0\t0\t0\n")
                 else:
                     # if (row2[1] != '0'):
-                    # f2.write(f"{row[0]}\t{row[1]}\t{row[2]}\t{row[3]}\t{row[4]}\t{row[6]}\t{row[7]}\t{lookup[lookup[0] == row2[1]]}\n")
+                    # f2.write(f"{row[0]}\t{row[1]}\t{row[2]}\t{row[3]}
+                    # \t{row[4]}\t{row[6]}\t{row[7]}\t{lookup[lookup[0] == row2[1]]}\n")
                     res = lookup[lookup["sound_code"] == row2[1]]
                     value = int(res["метка_категории"].iloc[0])
                     # print(value)
                     f2.write(
-                        f"{row2[0]}\t{row2[1]}\t{row2[2]}\t{row2[3]}\t{row2[4]}\t{row2[5]}\t{row2[6]}\t{value}\n"
+                        f"{row2[0]}\t{row2[1]}\t{row2[2]}\t{row2[3]}"
+                        f"\t{row2[4]}\t{row2[5]}\t{row2[6]}\t{value}\n"
                     )
                 # else:
                 #     f2.write("0\t0\t0\t0\t0\t0\t0\t0\n")

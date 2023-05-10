@@ -37,7 +37,8 @@ def generate_sequence(list_name):
         2148,
         2152,
     ]
-    df = pd.read_excel("sequences.xls", sheet_name=f"Seq{list_name}")
+    df = pd.read_csv("test.csv")
+    # df = pd.read_excel("sequences.xls", sheet_name=f"Seq{list_name}")
     nan_value = float("NaN")
     df.replace("", nan_value, inplace=True)
     df.dropna(subset=["sound_code"], inplace=True)
@@ -96,13 +97,14 @@ def generate_sequence(list_name):
 
 
 def main():
-    for i in range(1, 33):
-        try:
-            generate_sequence(i)
-        except Exception as inst:
-            print(type(inst))
-            print(inst)
-            print(f"Error in seq{i}")
+    generate_sequence(1)
+    # for i in range(1, 33):
+    #     try:
+    #         generate_sequence(i)
+    #     except Exception as inst:
+    #         print(type(inst))
+    #         print(inst)
+    #         print(f"Error in seq{i}")
 
 
 if __name__ == "__main__":

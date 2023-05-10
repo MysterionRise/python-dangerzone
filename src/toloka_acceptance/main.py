@@ -21,10 +21,9 @@ async def create_upload_file(file: UploadFile = File(...), limit: int = Form(...
     for index, row in df.iterrows():
         print(index)
         print(row)
-        if (
-            64 - (row["OUTPUT:pic_name"]["count"] + row["OUTPUT:pic_act_list"]["count"])
-            > limit
-        ):
+        count1 = row["OUTPUT:pic_name"]["count"]
+        count2 = row["OUTPUT:pic_act_list"]["count"]
+        if 64 - (count1 + count2) > limit:
             results.append(index)
 
     return {

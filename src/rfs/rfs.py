@@ -35,14 +35,14 @@ def main():
                 cell7 = cells[6]
                 # word_representation_impl = lookup.loc[
                 #     (lookup['sound_code'] == sound_code) & (lookup[
-                #                                                 'quest1_a_sound_id'] == quest1_a_sound_id)]
+                #                   'quest1_a_sound_id'] == quest1_a_sound_id)]
                 word_representation_impl = lookup.loc[
                     (lookup["quest1_a_sound_id"] == quest1_a_sound_id)
                 ]
                 impl_ = word_representation_impl["метка_seq1"].values
-                # word_representation_expl = lookup.loc[
-                #     (lookup['sound_code'] == sound_code) & (lookup[
-                #                                                 'quest2_b_sound_id'] == quest2_b_sound_id)]
+                # word_representation_expl = lookup.loc[ (lookup[
+                # 'sound_code'] == sound_code) & (lookup[
+                # 'quest2_b_sound_id'] == quest2_b_sound_id)]
                 word_representation_expl = lookup.loc[
                     (lookup["quest2_b_sound_id"] == quest2_b_sound_id)
                 ]
