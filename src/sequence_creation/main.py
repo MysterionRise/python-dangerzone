@@ -61,9 +61,18 @@ def generate_sequence(list_name):
         fourth = row["ac_row"]
         fifth = row["pic_code"]
         sixth = row["метка_seq1"]
+        seventh = row["text_quest"]
         s = pd.Series(
-            [int(first), int(second), int(third), int(fourth), int(fifth), int(sixth)],
-            index=["1", "2", "3", "4", "5", "6"],
+            [
+                int(first),
+                int(second),
+                int(third),
+                int(fourth),
+                int(fifth),
+                int(sixth),
+                seventh,
+            ],
+            index=["1", "2", "3", "4", "5", "6", "7"],
         )
         if fifth in first_df_list:
             first_df = first_df.append(s, ignore_index=True)
@@ -77,18 +86,18 @@ def generate_sequence(list_name):
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     second_df = second_df.sample(frac=1).reset_index(drop=True)
     merged_df = pd.concat([first_df, second_df])
-    final_df = pd.DataFrame(columns=["1", "2", "3", "4", "5"])
+    final_df = pd.DataFrame(columns=["1", "2", "3", "4", "5", "6"])
     for _, row in merged_df.iterrows():
         swap_prob = random.random()
         if swap_prob < 0.5:
             s = pd.Series(
-                [row["1"], row["2"], row["3"], row["4"], row["5"], str(row["6"])[:-2]],
+                [row["1"], row["2"], row["3"], row["4"], row["5"], row["7"]],
                 index=["1", "2", "3", "4", "5", "6"],
             )
             final_df = final_df.append(s, ignore_index=True)
         else:
             s = pd.Series(
-                [row["1"], row["2"], row["3"], row["5"], row["4"], str(row["6"])[:-2]],
+                [row["1"], row["2"], row["3"], row["5"], row["4"], row["7"]],
                 index=["1", "2", "3", "4", "5", "6"],
             )
             final_df = final_df.append(s, ignore_index=True)
