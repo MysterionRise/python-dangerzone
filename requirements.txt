@@ -8,6 +8,7 @@ fastapi
 uvicorn[standard]
 aiofiles
 xlrd
+numpy
 openpyxl
 apache_beam
 mwparserfromhell
