@@ -72,7 +72,16 @@ def process_sequence(sheet, output_dir):
 
 
 def process_excel_file(excel_path, output_dir):
-    for sheet_name in ["Seq1_1", "Seq1_2", "Seq1_3", "Seq1_4", "Base"]:
+    for sheet_name in [
+        "Seq1_4",
+        "Seq1_5",
+        "Seq1_6",
+        "Seq1_7",
+        "Seq1_8",
+        "Seq1_9",
+        "Seq1_10",
+        "Seq1_11",
+    ]:
         df = pd.read_excel(excel_path, sheet_name=sheet_name, engine="openpyxl")
         process_sequence(df, os.path.join(output_dir, sheet_name))
 
@@ -106,6 +115,6 @@ def load_image(img_path, resize_percentage=None):
 
 
 if __name__ == "__main__":
-    excel_path = "sequences.xlsx"
+    excel_path = "sequences2.xlsx"
     output_dir = "output"
     process_excel_file(excel_path, output_dir)
