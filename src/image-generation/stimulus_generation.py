@@ -71,17 +71,12 @@ def process_sequence(sheet, output_dir):
         base_img.save(output_file_path)
 
 
+def generate_sequence(start, finish):
+    return ["Seq1_{}".format(i) for i in range(start, finish + 1)]
+
+
 def process_excel_file(excel_path, output_dir):
-    for sheet_name in [
-        "Seq1_4",
-        "Seq1_5",
-        "Seq1_6",
-        "Seq1_7",
-        "Seq1_8",
-        "Seq1_9",
-        "Seq1_10",
-        "Seq1_11",
-    ]:
+    for sheet_name in generate_sequence(12, 23):
         df = pd.read_excel(excel_path, sheet_name=sheet_name, engine="openpyxl")
         process_sequence(df, os.path.join(output_dir, sheet_name))
 
@@ -115,6 +110,6 @@ def load_image(img_path, resize_percentage=None):
 
 
 if __name__ == "__main__":
-    excel_path = "sequences2.xlsx"
+    excel_path = "sequences.xlsx"
     output_dir = "output"
     process_excel_file(excel_path, output_dir)
