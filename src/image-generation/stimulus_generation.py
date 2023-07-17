@@ -76,7 +76,7 @@ def generate_sequence(start, finish):
 
 
 def process_excel_file(excel_path, output_dir):
-    for sheet_name in generate_sequence(12, 23):
+    for sheet_name in generate_sequence(24, 32):
         df = pd.read_excel(excel_path, sheet_name=sheet_name, engine="openpyxl")
         process_sequence(df, os.path.join(output_dir, sheet_name))
 
