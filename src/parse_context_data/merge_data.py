@@ -16,7 +16,7 @@ def process_log_files(directory_path):
                 user_id = os.path.splitext(filename)[0]
 
                 # Process the file line by line
-                for i in range(0, len(lines), 4):
+                for i in range(0, len(lines), 2):
                     try:
                         answer = lines[i].strip().split(",")[0]
                         answer_reaction_time = lines[i].strip().split(",")[1]
