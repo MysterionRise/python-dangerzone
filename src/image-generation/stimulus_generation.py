@@ -53,16 +53,23 @@ def process_sequence(sheet, output_dir):
 
             # If any path ends with ".0" (because it was read as a float), remove it
             corner_img_paths = [
-                path[:-2] if path.endswith(".0") else path for path in corner_img_paths
+                path[:-2] if path.endswith(".0") else path
+                for path in corner_img_paths
             ]
 
             for i, corner_img_path in enumerate(corner_img_paths):
-                corner_img = load_image(corner_img_path, resize_percentage=0.75)
+                corner_img = load_image(
+                    corner_img_path, resize_percentage=0.75
+                )
                 pos_x = (
-                    (IMAGE_SIZE[0] - corner_img.width - padding) if i % 2 else padding
+                    (IMAGE_SIZE[0] - corner_img.width - padding)
+                    if i % 2
+                    else padding
                 )
                 pos_y = (
-                    (IMAGE_SIZE[1] - corner_img.height - padding) if i // 2 else padding
+                    (IMAGE_SIZE[1] - corner_img.height - padding)
+                    if i // 2
+                    else padding
                 )
                 base_img = merge_images(base_img, corner_img, (pos_x, pos_y))
 
@@ -77,7 +84,9 @@ def generate_sequence(start, finish):
 
 def process_excel_file(excel_path, output_dir):
     for sheet_name in generate_sequence(24, 32):
-        df = pd.read_excel(excel_path, sheet_name=sheet_name, engine="openpyxl")
+        df = pd.read_excel(
+            excel_path, sheet_name=sheet_name, engine="openpyxl"
+        )
         process_sequence(df, os.path.join(output_dir, sheet_name))
 
 
@@ -98,13 +107,20 @@ def draw_text(text, font_path, font_size):
 
 
 def load_image(img_path, resize_percentage=None):
-    if img_path.isupper() and len(img_path) == 5:  # If the img_path is a 5-letter word
+    if (
+        img_path.isupper() and len(img_path) == 5
+    ):  # If the img_path is a 5-letter word
         return draw_text(img_path, FONT_PATH, FONT_SIZE)
 
-    img = Image.open(os.path.join(IMAGES_BASE_PATH, img_path + ".png")).convert("RGBA")
+    img = Image.open(
+        os.path.join(IMAGES_BASE_PATH, img_path + ".png")
+    ).convert("RGBA")
     if resize_percentage is not None:
         width, height = img.size
-        new_size = (int(width * resize_percentage), int(height * resize_percentage))
+        new_size = (
+            int(width * resize_percentage),
+            int(height * resize_percentage),
+        )
         img = img.resize(new_size, Image.ANTIALIAS)
     return img
 

@@ -17,7 +17,9 @@ def request(flag_: str):
 if __name__ == "__main__":
     url = "https://cat-step.disasm.me/"
     flag = "spbctf{%s}"
-    all_chars = "qwertyuiopasdfghjklzxcvbnm1234567890_QWERTYUIOPASDFGHJKLZXCVBNM"
+    all_chars = (
+        "qwertyuiopasdfghjklzxcvbnm1234567890_QWERTYUIOPASDFGHJKLZXCVBNM"
+    )
     best_flag = "easy_web_fuzzing_0t5AFzSG0Oc"
     prev_length = 5
     while prev_length != 1:

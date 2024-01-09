@@ -31,11 +31,17 @@ for sheet in sheets:
         pics = [row[col] for col in pic_columns]
         random.shuffle(pics)
         df_filtered.at[index, pic_columns] = pics
-        df_filtered.at[index, "pic1_cor_position"] = pics.index(row["pic1_cor"]) + 1
+        df_filtered.at[index, "pic1_cor_position"] = (
+            pics.index(row["pic1_cor"]) + 1
+        )
 
         # Convert float columns to int
     df_filtered = df_filtered.astype(
-        {col: int for col in df_filtered.columns if df_filtered[col].dtype == "float64"}
+        {
+            col: int
+            for col in df_filtered.columns
+            if df_filtered[col].dtype == "float64"
+        }
     )
 
     # Drop 'ans_pic' column

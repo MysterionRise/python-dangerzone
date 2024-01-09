@@ -6,7 +6,11 @@ def detect_cycle(head_node: Node) -> bool:
     fast = head_node
     loop = False
 
-    while slow is not None and fast is not None and fast.get_next_node() is not None:
+    while (
+        slow is not None
+        and fast is not None
+        and fast.get_next_node() is not None
+    ):
         slow = slow.get_next_node()
         fast = fast.get_next_node().get_next_node()
 

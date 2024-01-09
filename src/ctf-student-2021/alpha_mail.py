@@ -47,7 +47,11 @@ def in_colour_range(pixel_colour, target_colour_list, range_size):
         gright = calculate_right_edge(target_colour[1], range_size)
         bleft = calculate_left_edge(target_colour[2], range_size)
         bright = calculate_right_edge(target_colour[2], range_size)
-        if rleft <= r <= rright and gleft <= g <= gright and bleft <= b <= bright:
+        if (
+            rleft <= r <= rright
+            and gleft <= g <= gright
+            and bleft <= b <= bright
+        ):
             return True
 
     return False

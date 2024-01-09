@@ -10,7 +10,9 @@ app.mount("/toloka", StaticFiles(directory="."), name="toloka")
 
 
 @app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile = File(...), limit: int = Form(...)):
+async def create_upload_file(
+    file: UploadFile = File(...), limit: int = Form(...)
+):
     results = []
     df = pd.read_csv(io.StringIO(file.file.read().decode("utf-8")), sep="\t")
     df = (

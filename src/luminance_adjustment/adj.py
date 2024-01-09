@@ -178,7 +178,9 @@ def distribution_for_files(files: List[str]):
         total_lumi.extend(distribution_of_luminocity(file))
     df = pd.DataFrame(total_lumi)
     print(df.describe())
-    plt.hist(total_lumi, density=True, bins=30)  # density=False would make counts
+    plt.hist(
+        total_lumi, density=True, bins=30
+    )  # density=False would make counts
     plt.ylabel("Probability")
     plt.xlabel("Data")
     plt.show()

@@ -21,7 +21,9 @@ def process_log_files(directory_path):
                         answer = lines[i].strip().split(",")[0]
                         answer_reaction_time = lines[i].strip().split(",")[1]
                         certainty = lines[i + 1].strip().split(",")[0]
-                        certainty_reaction_time = lines[i + 1].strip().split(",")[1]
+                        certainty_reaction_time = (
+                            lines[i + 1].strip().split(",")[1]
+                        )
 
                         events.append(
                             [

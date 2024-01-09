@@ -59,7 +59,15 @@ def main():
                     row["Corr"],
                     get_rt(answers),
                 ],
-                index=["name", "seq", "Plod", "Condtion", "Answer", "Corr", "Time"],
+                index=[
+                    "name",
+                    "seq",
+                    "Plod",
+                    "Condtion",
+                    "Answer",
+                    "Corr",
+                    "Time",
+                ],
             )
             results = results.append(s, ignore_index=True)
             ind += 1

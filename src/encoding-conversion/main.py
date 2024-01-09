@@ -9,7 +9,9 @@ def convert_to_utf8():
             # read file
             lines = f.readlines()
             # save file
-            with open(f"data-updated/{file.split('/')[1]}", "w", encoding="utf-8") as f:
+            with open(
+                f"data-updated/{file.split('/')[1]}", "w", encoding="utf-8"
+            ) as f:
                 f.writelines(lines)
 
 
