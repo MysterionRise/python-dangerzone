@@ -164,3 +164,4 @@ dmypy.json
 /src/encoding-conversion/utf-8/
 /src/encoding-conversion/utf-16/
 /src/image-generation/output/
+/src/pdf-merging/data/
